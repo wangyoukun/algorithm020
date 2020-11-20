@@ -11,11 +11,16 @@ class Solution
      */
     function myPow1($x, $n)
     {
+//        if ($n < 0) {
+//            return 1 / $this->dg($x, -$n);
+//        } else {
+//            return $this->dg($x, $n);
+//        }
         if ($n < 0) {
-            return 1 / $this->dg($x, -$n);
-        } else {
-            return $this->dg($x, $n);
+            $x = 1 / $x;
+            $n = -n;
         }
+        return $this->dg($x, $n);
     }
 
     function dg($x, $n)
@@ -37,11 +42,16 @@ class Solution
      */
     function myPow($x, $n)
     {
+//        if ($n < 0) {
+//            return 1 / $this->dd($x, -$n);
+//        } else {
+//            return $this->dd($x, $n);
+//        }
         if ($n < 0) {
-            return 1 / $this->dd($x, -$n);
-        } else {
-            return $this->dd($x, $n);
+            $x = 1 / $x;
+            $n = -$n;
         }
+        return $this->dd($x, $n);
     }
 
     function dd($x,$n) {
