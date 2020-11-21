@@ -12,8 +12,7 @@ class Solution
         $i = 0;
         for ($j = 1; $j < count($nums); $j++) {
             if ($nums[$j] != $nums[$j - 1]) {
-                $nums[$i + 1] = $nums[$j];
-                $i++;
+                $nums[--$i] = $nums[$j];
             }
         }
         return $i + 1;
