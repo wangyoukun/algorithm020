@@ -64,7 +64,7 @@ class Solution
      * @param Integer $k
      * @return Integer[]
      */
-    function getLeastNumbers($arr, $k)
+    function getLeastNumbers4($arr, $k)
     {
         if ($k == 0) return [];
         if ($k >= count($arr)) return $arr;
@@ -122,6 +122,31 @@ class Solution
         $arr[$j] = $arr[$i] - $arr[$j];
         $arr[$i] = $arr[$i] - $arr[$j];
     }
+
+    /**
+     * 四、计数排序 O(N) O(N)
+     * 数据范围有限时直接计数排序就行了
+     * @param Integer[] $arr
+     * @param Integer $k
+     * @return Integer[]
+     */
+    function getLeastNumbers($arr, $k)
+    {
+        $hashMap = array_fill(0, 10000, 0);
+        $count = count($arr);
+        for ($i = 0; $i < $count; $i++) {
+            $hashMap[$arr[$i]]++;
+        }
+        $idx = 0;
+        $ret = [];
+        for ($i = 0; $i < count($hashMap); $i++) {
+            while ($hashMap[$i]-- > 0 && $idx < $k) {
+                $ret[$idx++] = $i;
+            }
+            if($idx == $k) break;
+        }
+        return $ret;
+    }
 }
 
 /*
@@ -137,6 +162,6 @@ $k = 2;
 $s = new Solution();
 $ret = $s->getLeastNumbers($in, $k);
 //$ret = $s->partition($in, 0, 2);
-$s->quickSearch($in, 0, 2, 1);
+//$s->quickSearch($in, 0, 2, 1);
 print_r($in);
 print_r($ret);
