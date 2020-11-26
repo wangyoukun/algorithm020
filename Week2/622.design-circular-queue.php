@@ -25,8 +25,8 @@ class MyCircularQueue
             return false;
         }
         $tailIndex = ($this->headIndex + $this->count) % $this->capacity;
-        $this->count++; //这一行需要计算尾索引后再增加 考虑 count = capatity - 1 时的情况
         $this->queue[$tailIndex] = $value;
+        $this->count++; //这一行需要计算尾索引后再增加 考虑 count = capatity - 1 时的情况
         return true;
     }
 
