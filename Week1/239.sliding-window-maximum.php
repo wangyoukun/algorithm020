@@ -10,6 +10,7 @@ class Solution
      */
     function maxSlidingWindow($nums, $k)
     {
+        if ($k == 0 || empty($nums)) return [];
         $count = count($nums);
         $deque = new SplQueue();
         $ret = [];
@@ -37,8 +38,12 @@ class Solution
 
 $in = [1, 3, -1, -3, 5, 3, 6, 7];
 $in = [1, -1];
+$in = [];
+$in = [1,3,1,2,0,5];
 $k = 3;
 $k = 1;
+$k = 0;
+$k = 3;
 $s = new Solution();
 $ret = $s->maxSlidingWindow($in, $k);
 print_r($ret);
