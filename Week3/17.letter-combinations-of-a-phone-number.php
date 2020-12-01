@@ -74,7 +74,7 @@ class Solution
         $letters = $hashMap[$digits[$level]];
         for ($i = 0; $i < strlen($letters); $i++) {
             $s = $s . $letters[$i];
-            $this->dfs($digits, $hashMap, $level + 1, $s);
+            $this->backtrack($digits, $hashMap, $level + 1, $s);
             $s = substr($s, 0, -1);
         }
     }
