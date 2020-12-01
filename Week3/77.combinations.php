@@ -108,8 +108,35 @@ class Solution
 
     /**
      * 还有一种位运算,暂时看不懂 有时间再研究
+     * 时间复杂度：O([n/k]k)  O(k)
+     * 四、 非递归（字典序法）实现组合型枚举 死磕了一晚上终于懂了一丢丢
+     * 因为要保证的是字典序。所以核心是必须要增加，但是又要保证只增加最少。 对于一个二进制序列 左边为高位,右边为低位 从低位往高位看 找到第一个连续的1与其左边的0交换 1右边的所有1全部移到最低位
      * https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode-solution/
+     * @param Integer $n
+     * @param Integer $k
+     * @return Integer[][]
      */
+    function combine4($n, $k)
+    {
+        $res = [];
+        $list = range(1, $k, 1);
+        $list[$k] = $n + 1; //为什么k的位置要存 n + 1 呢? 因为后面循环比较最后一个值的时候会用到 为什么不是n呢？序列的最后的一个最大值是n 所以哨兵也放比n大的数
+        $j = 0;
+        while ($j < $k) {
+            $res[] = array_slice($list, 0, $k);
+            $j = 0;
+            // 寻找第一个 temp[j] + 1 != temp[j + 1] 的位置 t
+            // 我们需要把 [0, t - 1] 区间内的每个位置重置成 [1, t] //这就是序列一开始的样子么 看下5，3序列的图 就明白了
+            while ($j < $k && $list[$j] + 1 == $list[$j + 1]) {
+                $list[$j] = $j + 1;  //
+                $j++;
+            }
+            // j 是第一个 temp[j] + 1 != temp[j + 1] 的位置
+            $list[$j]++;
+        }
+
+        return $res;
+    }
 }
 
 /**
@@ -126,5 +153,5 @@ class Solution
  */
 
 $s = new Solution();
-$ret = $s->combine(4, 2);
+$ret = $s->combine4(5, 3);
 print_r($ret);
