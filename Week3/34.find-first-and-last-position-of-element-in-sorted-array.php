@@ -48,9 +48,11 @@ class Solution
         $leftBorder = -1;
         while ($left <= $right) {
             $mid = $left + (($right - $left) >> 1);
+            print_r('L:' . $left . '|R:' . $right . '|m:' . $mid . PHP_EOL);
             if ($nums[$mid] >= $target) {
                 $right = $mid - 1;
                 $leftBorder = $right;
+                print_r('LB:' . $leftBorder . PHP_EOL);
             } else {
                 $left = $mid + 1;
             }
@@ -105,13 +107,13 @@ class Solution
 
 $nums = [1, 2, 2, 3];
 $target = 2;
-$nums = [5, 7, 7, 8, 8, 10];
-$target = 8;
 $nums = [1];
 $target = 1;
+$nums = [5, 7, 7, 9, 9, 10];
+$target = 8;
 $s = new Solution();
-$ret = $s->searchRange2($nums, $target);
-print_r($ret);
-//$retL = $s->findLeftBorder($nums, $target);
-//$retR = $s->findRightBorder($nums, $target);
-//print_r([$retL,$retR]);$retR
+//$ret = $s->searchRange2($nums, $target);
+//print_r($ret);
+$retL = $s->findLeftBorder($nums, $target);
+$retR = $s->findRightBorder($nums, $target);
+print_r([$retL,$retR]);
