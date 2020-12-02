@@ -92,11 +92,12 @@ class Solution
     {
         $leftIdx = $this->findLeftBorder($nums, $target);
         $rightIdx = $this->findRightBorder($nums, $target);
-        if ($leftIdx == -1 && $rightIdx == -1) return [-1, -1];
+        if ($leftIdx == -1 && $rightIdx == -1) return [-1, -1];  //针对 target 在数组外部
         if ($leftIdx <= $rightIdx && $nums[$leftIdx + 1] == $target && $nums[$rightIdx - 1] == $target) {
-            return [$leftIdx + 1, $rightIdx - 1];
+            return [$leftIdx + 1, $rightIdx - 1];  //针对 target 在数组内部 且存在
+        } else {
+            return [-1, -1]; //针对 target 再数组内部范围 但是target 不在数组中
         }
-        return [-1, -1];
     }
 }
 
@@ -116,4 +117,4 @@ $s = new Solution();
 //print_r($ret);
 $retL = $s->findLeftBorder($nums, $target);
 $retR = $s->findRightBorder($nums, $target);
-print_r([$retL,$retR]);
+print_r([$retL, $retR]);
