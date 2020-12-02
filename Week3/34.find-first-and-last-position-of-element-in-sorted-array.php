@@ -26,7 +26,7 @@ class Solution
         $ans = count($nums);  //当nums只有一个数时且就找这个数
         while ($l <= $r) {
             $mid = $l + (($r - $l) >> 2);
-            if ($nums[$mid] > $target || ($lower && $nums[$mid] >= $target)) {
+            if ($nums[$mid] > $target || ($lower && $nums[$mid] == $target)) {
                 $r = $mid - 1;
                 $ans = $mid;
             } else {
