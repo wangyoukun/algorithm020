@@ -35,6 +35,67 @@ class Solution
         }
         return $ans;
     }
+
+    /**
+     * 寻找左边界
+     * @param $nums
+     * @param $target
+     */
+    function findLeftBorder($nums, $target)
+    {
+        $left = 0;
+        $right = count($nums) - 1;
+        $leftBorder = -1;
+        while ($left <= $right) {
+            $mid = $left + (($right - $left) >> 1);
+            if ($nums[$mid] >= $target) {
+                $right = $mid - 1;
+                $leftBorder = $right;
+            } else {
+                $left = $mid + 1;
+            }
+        }
+        return $leftBorder;
+    }
+
+    /**
+     * 寻找右边界
+     * @param $nums
+     * @param $target
+     */
+    function findRightBorder($nums, $target)
+    {
+        $left = 0;
+        $right = count($nums) - 1;
+        $rightBorder = -1;
+        while ($left <= $right) {
+            $mid = $left + (($right - $left) >> 1);
+            if ($nums[$mid] <= $target) {
+                $left = $mid + 1;
+                $rightBorder = $left;
+            } else {
+                $right = $mid - 1;
+            }
+        }
+        return $rightBorder;
+    }
+
+    /**
+     * O(LogN) O(1)
+     * @param Integer[] $nums
+     * @param Integer $target
+     * @return Integer[]
+     */
+    function searchRange2($nums, $target)
+    {
+        $leftIdx = $this->findLeftBorder($nums, $target);
+        $rightIdx = $this->findRightBorder($nums, $target);
+        if ($leftIdx == -1 && $rightIdx == -1) return [-1, -1];
+        if ($leftIdx <= $rightIdx && $nums[$leftIdx + 1] == $target && $nums[$rightIdx - 1] == $target) {
+            return [$leftIdx + 1, $rightIdx - 1];
+        }
+        return [-1, -1];
+    }
 }
 
 /**
@@ -42,10 +103,15 @@ class Solution
  * 输出：[3,4]
  */
 
+$nums = [1, 2, 2, 3];
+$target = 2;
 $nums = [5, 7, 7, 8, 8, 10];
 $target = 8;
 $nums = [1];
 $target = 1;
 $s = new Solution();
-$ret = $s->searchRange($nums, $target);
+$ret = $s->searchRange2($nums, $target);
 print_r($ret);
+//$retL = $s->findLeftBorder($nums, $target);
+//$retR = $s->findRightBorder($nums, $target);
+//print_r([$retL,$retR]);$retR
