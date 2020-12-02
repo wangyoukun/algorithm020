@@ -5,6 +5,7 @@ class Solution
 
     /**
      * 一、递归解法 O(3^n * 4^m) O(len(S))
+     * 字符串的问题的特殊之处在于，字符串的拼接生成新对象，因此在这一类问题上没有显示「回溯」的过程
      * @param String $digits
      * @return String[]
      */
