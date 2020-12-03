@@ -34,10 +34,11 @@ class Solution
     }
 
     /**
+     * 一、栈迭代 O(M) O(M)
      * @param Node $root
      * @return integer[]
      */
-    function preorder($root)
+    function preorder2($root)
     {
         $ret = [];
         if (!$root) return $ret;
@@ -47,11 +48,32 @@ class Solution
             $node = $stack->pop();
             if (!$node) continue;
             $ret[] = $node->val;
-            foreach (array_reverse($node->children) as $child) {
+            foreach (array_reverse($node->children) as $child) { //N叉树前序遍历这个地方反转
                 $stack->push($child);
             }
         }
         return $ret;
+    }
+
+    /**
+     * 一、递归 O(M) O(M)
+     * @param Node $root
+     * @return integer[]
+     */
+    function preorder($root)
+    {
+        if (!$root) return [];
+        $this->dfs($root);
+        return $this->ret;
+    }
+
+    function dfs($root)
+    {
+        if (!$root) return;
+        $this->ret[] = $root->val;
+        foreach ($root->children as $child) {
+            $this->dfs($child);
+        }
     }
 }
 
