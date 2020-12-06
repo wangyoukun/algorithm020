@@ -22,11 +22,11 @@ class BinaryTree
         $left = 2 * $i + 1;
         $right = 2 * $i + 2;
         $rootLeft = $this->createTree($arrTree, $left);
-        if (!is_null($rootLeft->val)) {
+        if ($rootLeft && !is_null($rootLeft->val)) {
             $root->left = $rootLeft;
         }
         $rootRight = $this->createTree($arrTree, $right);
-        if (!is_null($rootRight->val)) {
+        if ($rootRight && !is_null($rootRight->val)) {
             $root->right = $rootRight;
         }
         return $root;
