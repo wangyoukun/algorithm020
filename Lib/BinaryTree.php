@@ -21,12 +21,18 @@ class BinaryTree
         $root = new TreeNode($arrTree[$i]);
         $left = 2 * $i + 1;
         $right = 2 * $i + 2;
-        $root->left = $this->createTree($arrTree, $left);
-        $root->right = $this->createTree($arrTree, $right);
+        $rootLeft = $this->createTree($arrTree, $left);
+        if (!is_null($rootLeft->val)) {
+            $root->left = $rootLeft;
+        }
+        $rootRight = $this->createTree($arrTree, $right);
+        if (!is_null($rootRight->val)) {
+            $root->right = $rootRight;
+        }
         return $root;
     }
 }
 
-//$arrtree = [3,5,1,6,2,0,8,null,null,7,4];
-//$a = new binarytree($arrtree);
+//$arrTree = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4];
+//$a = new BinaryTree($arrTree);
 //print_r($a);
