@@ -1,4 +1,5 @@
 <?php
+require_once '../Lib/BinaryTree.php';
 
 /**
  * Definition for a binary tree node.
@@ -13,7 +14,7 @@ class Solution
 {
 
     /**
-     * 借助队列实现层序遍历 O(N) O(N)
+     * 一、借助队列实现层序遍历 O(N) O(N)
      * @param TreeNode $root
      * @return Integer[][]
      */
@@ -36,4 +37,30 @@ class Solution
         }
         return $ret;
     }
+
+    /**
+     * 二、递归实现 O(N) O(N)
+     * @param TreeNode $root
+     * @return Integer[][]
+     */
+    function levelOrder2($root)
+    {
+        $ret = [];
+        $this->dfs($root, 0, $ret);
+        return $ret;
+    }
+
+    function dfs($root, $level, &$ret)
+    {
+        if (!$root) return;
+        $ret[$level][] = $root->val;
+        $this->dfs($root->left, $level + 1, $ret);
+        $this->dfs($root->right, $level + 1, $ret);
+    }
+
 }
+
+$root = new BinaryTree([3, 9, 20, null, null, 15, 7]);
+$s = new Solution();
+$ret = $s->levelOrder2($root);
+print_r($ret);
