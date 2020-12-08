@@ -112,7 +112,7 @@ class Solution
 
 //       print_r($idWord);
 //       print_r($wordId);
-       //print_r($edges);
+        //print_r($edges);
         $inf = (1 << 20);
         $cost = array_fill(0, count($idWord), $inf); //cost[i] 代表 i的点 到 beginWord的点 的距离
         $res = [];
@@ -158,6 +158,55 @@ class Solution
         return true;
     }
 
+    /**
+     * @param String $beginWord
+     * @param String $endWord
+     * @param String[] $wordList
+     * @return String[][]
+     */
+    //防止重复计算，在遍历layer之前，将其中的word在wordlist去重
+    // 两个array合并array_merge，返回数组
+    function findLadders3($beginWord, $endWord, $wordList)
+    {
+        if (!in_array($endWord, $wordList)) {
+            return [];
+        }
+        $wordList = array_flip($wordList);
+        $layer = [$beginWord => [[$beginWord]]];
+        print_r($layer);
+        $size = strlen($beginWord);
+        $count = 0;
+        while (!empty($layer)) {
+            $new_layer = [];
+            //从wordList移除已使用的word
+            foreach (array_keys($layer) as $word) {
+                unset($wordList[$word]);
+            }
+
+            foreach (array_keys($layer) as $word) {
+                //如果找到最后的词 则结束
+                if ($word == $endWord) {
+                    return $layer[$word];
+                }
+
+                //否则继续搜索邻居单词
+                for ($i = 0; $i < $size; $i++) {
+                    $new_word = $word;
+                    for ($ch = ord('a'); $ch <= ord('z'); $ch++) {
+                        $new_word[$i] = chr($ch);
+                        if (array_key_exists($new_word, $wordList)) { //wordList逐渐变小
+                            foreach ($layer[$word] as $j) {
+                                $new_layer[$new_word][] = array_merge($j, [$new_word]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $layer = $new_layer;
+        }
+        return [];
+    }
 
 }
 
@@ -196,7 +245,7 @@ $endWord = 'cog';
 $wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
 
 $s = new Solution();
-$ret = $s->findLadders2($beginWord, $endWord, $wordList);
+$ret = $s->findLadders3($beginWord, $endWord, $wordList);
 print_r($ret);
 
 $res = [];
