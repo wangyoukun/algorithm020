@@ -15,7 +15,7 @@ class Solution
         $count = count($nums);
         if ($count < 3) return [];
         for ($i = 0; $i < $count; $i++) {
-            if ($nums[$i] > 0) return $ret;
+            if ($nums[$i] > 0) return $ret; //注意这两个特殊情况
             if ($i > 0 && $nums[$i] == $nums[$i - 1]) continue; //注意这个地方一定不要写成 $i-- 死循环
             $l = $i + 1;
             $r = $count - 1;
@@ -40,8 +40,11 @@ class Solution
 
 
 $in = [-1, 0, 1, 2, -1, -4];
+$in = [-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4];
+$in = [0,0,0];
 $s = new Solution();
 $ret = $s->threeSum($in);
+print_r($in);
 print_r($ret);
 
 /*
