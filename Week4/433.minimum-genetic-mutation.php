@@ -54,27 +54,27 @@ class Solution
         $layer = [$start => [[$start]]];
         $queue->enqueue([$layer, $step]);
         while (!$queue->isEmpty()) {
-            $size = $queue->count();
-            $step++;
-            for ($i = 0; $i < $size; $i++) {
-                list($layer, $level) = $queue->dequeue();
-                foreach (array_keys($layer) as $genetic) {
-                    if ($genetic == $end) return $level;
-                    for ($j = 0; $j < strlen($genetic); $j++) {
-                        $newGenetic = $genetic;
-                        foreach (['A', 'C', 'G', 'T'] as $char) {
-                            $newGenetic[$j] = $char;
-                            if (isset($bank[$newGenetic])) {
-                                $newLayer = [];
-                                foreach ($layer[$genetic] as $arrWord) {
-                                    $newLayer[$newGenetic][] = array_merge($arrWord, [$newGenetic]);
-                                }
-                                $queue->enqueue([$newLayer, $level + 1]);
-                                unset($bank[$newGenetic]);
+            $newLayer = [];
+            list($layer, $step) = $queue->dequeue();
+            foreach (array_keys($layer) as $genetic) {
+                unset($bank[$genetic]);
+            }
+            foreach (array_keys($layer) as $genetic) {
+                if ($genetic == $end) return $step;
+                for ($j = 0; $j < strlen($genetic); $j++) {
+                    $newGenetic = $genetic;
+                    foreach (['A', 'C', 'G', 'T'] as $char) {
+                        $newGenetic[$j] = $char;
+                        if (isset($bank[$newGenetic])) {
+                            foreach ($layer[$genetic] as $arrWord) {
+                                $newLayer[$newGenetic][] = array_merge($arrWord, [$newGenetic]);
                             }
                         }
                     }
                 }
+            }
+            if (!empty($newLayer)) {
+                $queue->enqueue([$newLayer, $step + 1]);
             }
         }
         return -1;
