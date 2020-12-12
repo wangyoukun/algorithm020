@@ -5,7 +5,7 @@ class Solution
 
     /**
      * 一、单向广度优先搜索
-     * 这种写法PHP运行起来很慢 不能AC 代码逻辑是正确的 其他语言很快 蛋疼
+     * 这种写法PHP运行起来很慢 不能AC 代码逻辑是正确的 多了很多冗余代码 参考最后两种优化代码
      * @param String $beginWord
      * @param String $endWord
      * @param String[] $wordList
@@ -28,7 +28,7 @@ class Solution
                 $curWord = $queue->dequeue();
                 for ($j = 0; $j < strlen($curWord); $j++) {
                     $oChar = $curWord[$j];
-                    for ($k = 'a'; $k <= 'z'; $k++) {
+                    for ($k = 'a'; $k <= 'z'; $k++) {  //这种写法有问题
                         if ($oChar == $k) continue;
                         $nChar = $k;
                         $curWord[$j] = $nChar;
@@ -52,39 +52,6 @@ class Solution
     }
 
     /**
-     * 一、单向广度优先搜索
-     * 这个也挺慢的不过相比上一个快不少 能AC
-     * @param $beginWord
-     * @param $endWord
-     * @param $wordList
-     * @return int|mixed
-     */
-    function ladderLength2($beginWord, $endWord, $wordList)
-    {
-
-        if (!in_array($endWord, $wordList)) return 0;
-        // 数组中的键和值交换一下
-        $newWordList = array_flip($wordList);
-        $queue = new SplQueue();
-        $queue->enqueue([$beginWord, 1]);
-        while (!$queue->isEmpty()) {
-            list($word, $step) = $queue->dequeue();
-            if ($word == $endWord) return $step;
-            for ($j = 0; $j < strlen($word); $j++) {
-                for ($k = 'a'; $k <= 'z'; $k++) {
-                    $nextWord = $word;
-                    $nextWord[$j] = $k;
-                    if (isset($newWordList[$nextWord])) {
-                        $queue->enqueue([$nextWord, $step + 1]);
-                        unset($newWordList[$nextWord]);
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
-    /**
      * 双向BFS
      * 这个相当快
      * @param $beginWord
@@ -92,7 +59,7 @@ class Solution
      * @param $wordList
      * @return int
      */
-    function ladderLength($beginWord, $endWord, $wordList)
+    function ladderLength3($beginWord, $endWord, $wordList)
     {
         if (!in_array($endWord, $wordList)) return 0;
         // 数组中的键和值交换一下
@@ -124,6 +91,85 @@ class Solution
                 }
             }
             $s1 = $s;
+        }
+        return 0;
+    }
+
+    /**
+     * 一、单向广度优先搜索
+     * 这个也挺慢的不过相比上一个快不少 能AC
+     * @param $beginWord
+     * @param $endWord
+     * @param $wordList
+     * @return int|mixed
+     */
+    function ladderLength2($beginWord, $endWord, $wordList)
+    {
+
+        if (!in_array($endWord, $wordList)) return 0;
+        // 数组中的键和值交换一下
+        $newWordList = array_flip($wordList);
+        $queue = new SplQueue();
+        $queue->enqueue([$beginWord, 1]);
+        while (!$queue->isEmpty()) {
+            list($word, $step) = $queue->dequeue();
+            if ($word == $endWord) return $step;
+            for ($j = 0; $j < strlen($word); $j++) {
+                $nextWord = $word;
+                for ($k = ord('a'); $k <= ord('z'); $k++) {
+                    $nextWord[$j] = chr($k);
+                    if (isset($newWordList[$nextWord])) {
+                        $queue->enqueue([$nextWord, $step + 1]);
+                        unset($newWordList[$nextWord]);
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * @param String $beginWord
+     * @param String $endWord
+     * @param String[] $wordList
+     * @return String[][]
+     */
+    //防止重复计算，在遍历layer之前，将其中的word在wordlist去重
+    // 两个array合并array_merge，返回数组
+    function ladderLength($beginWord, $endWord, $wordList)
+    {
+        if (!in_array($endWord, $wordList)) {
+            return 0;
+        }
+        $wordList = array_flip($wordList);
+        $layer = [$beginWord => [[$beginWord]]];
+        $step = 0;
+        $queue = new SplQueue();
+        $queue->enqueue([$layer, $step]);
+        while (!$queue->isEmpty()) {
+            $newLayer = [];
+            list($layer, $step) = $queue->dequeue();
+            foreach (array_keys($layer) as $word) {
+                if ($word == $endWord) return $step + 1;
+                unset($wordList[$word]);
+            }
+            foreach (array_keys($layer) as $word) {
+                for ($j = 0; $j < strlen($word); $j++) {
+                    $newWord = $word;
+                    for ($ch = ord('a'); $ch <= ord('z'); $ch++) {
+                        $newWord[$j] = chr($ch);
+                        if (isset($wordList[$newWord])) {
+                            foreach ($layer[$word] as $arrWord) {
+                                $newLayer[$newWord][] = array_merge($arrWord, [$newWord]);
+                            }
+                        }
+                    }
+                }
+            }
+            if (!empty($newLayer)) { // 注意 为空时不入队
+                $queue->enqueue([$newLayer, $step + 1]);
+            }
         }
         return 0;
     }
