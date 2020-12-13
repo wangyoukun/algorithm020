@@ -38,7 +38,7 @@ class Solution
                     if (!isset($hash[$nx][$ny])) { //注意坐标需要移动
                         $x = $nx;
                         $y = $ny;
-                        $ans = max($ans, $x * $x + $y * $y);
+                        $ans = max($ans, $x * $x + $y ** 2);
                     }
                 }
             }
