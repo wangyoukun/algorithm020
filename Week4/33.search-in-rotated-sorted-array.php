@@ -4,6 +4,7 @@ class Solution
 {
 
     /**
+     * O(LogN) O(1)
      * @param Integer[] $nums
      * @param Integer $target
      * @return Integer
