@@ -14,7 +14,7 @@ class Solution
         $x = ($num >> 1);
         while ($x ** 2 > $num) {
             //print_r('x0:' . $x . PHP_EOL);
-            $x = (($x + ($num / $x)) >> 1);
+            $x = (($x + ($num / $x)) >> 1); //注意这个地方需要向下取整
             //print_r('x1:' . $x . PHP_EOL);
         }
         return $x ** 2 == $num;
