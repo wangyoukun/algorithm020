@@ -57,12 +57,41 @@ class Solution
 //        }
         foreach ($coins as $coin) {
             //优化循环，减少数组索引访问
-           for($i = $coin;$i <= $amount;$i++) {
-               $dp[$i] += $dp[$i - $coin];
-           }
+            for ($i = $coin; $i <= $amount; $i++) {
+                $dp[$i] += $dp[$i - $coin];
+            }
         }
         print_r($dp);
         return $dp[$amount];
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/coin-change-2/solution/c-bei-bao-wen-ti-by-yizhe-shi/
+     * @param $amount
+     * @param $coins
+     * @return array
+     */
+    function change3($amount, $coins)
+    {
+        $res = [];
+        $k = count($coins);
+        $this->dfs($coins, $amount, 0, [], $res);
+        return $res;
+    }
+
+    function dfs($coins, $amount, $level, $path, &$res)
+    {
+        if ($amount == 0) {
+            $res[] = $path;
+            return;
+        }
+        for ($i = 0; $i < count($coins); $i++) {
+            if ($coins[$i] <= $amount) {
+                array_push($path, $coins[$i]);
+                $this->dfs($coins, $amount - $coins[$i], $level + 1, $path, $res);
+                array_pop($path);
+            }
+        }
     }
 }
 
@@ -76,8 +105,10 @@ class Solution
  * 5=1+1+1+1+1
  */
 
-$amount = 6;
-$coins = [2, 3, 5];
+$amount = 4;
+$coins = [1, 2, 3];
+$amount = 5;
+$coins = [1, 2, 5];
 $s = new Solution();
-$ret = $s->change2($amount, $coins);
+$ret = $s->change3($amount, $coins);
 print_r($ret);
