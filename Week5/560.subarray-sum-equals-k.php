@@ -49,6 +49,32 @@ class Solution
         }
         return $count;
     }
+
+    /**
+     * 一 前缀和 + 哈希 O(n) O(n)
+     * @param Integer[] $nums
+     * @param Integer $k
+     * @return Integer
+     */
+    function subarraySum3($nums, $k)
+    {
+        $count = 0;
+        $hash = [0 => 1];
+        $sum = 0;
+        for ($i = 0; $i < count($nums); $i++) {
+            $sum += $nums[$i];
+            if (isset($hash[$sum - $k])) {
+                $count += $hash[$sum - $k];
+            }
+            if (!isset($hash[$sum])) {
+                $hash[$sum] = 1;
+            } else {
+                $hash[$sum]++;
+            }
+        }
+        print_r($hash);
+        return $count;
+    }
 }
 
 /**
@@ -63,5 +89,5 @@ $k = 2;
 $nums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 $k = 0;
 $s = new Solution();
-$ret = $s->subarraySum2($nums, $k);
+$ret = $s->subarraySum3($nums, $k);
 print_r($ret);
