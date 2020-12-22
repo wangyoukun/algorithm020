@@ -28,6 +28,12 @@ class Solution
         return $dp[$n1][$n2];
     }
 
+    /**
+     * 递归写法 超时
+     * @param $text1
+     * @param $text2
+     * @return int|mixed
+     */
     function longestCommonSubsequence2($text1, $text2)
     {
         $n1 = strlen($text1);
