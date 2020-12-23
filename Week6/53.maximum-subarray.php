@@ -4,7 +4,7 @@ class Solution
 {
 
     /**
-     * 一、动态规划 O(N) O(1)
+     * 一、动态规划求解最大连续子数组和 O(N) O(1)
      * @param Integer[] $nums
      * @return Integer
      */
