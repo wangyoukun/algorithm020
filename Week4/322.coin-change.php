@@ -34,6 +34,7 @@ class Solution
     /**
      * 二、动态规划 自下而上 O(Sn) O(S) S金额 n是硬币数量
      * 定义状态 dp[i] 组成面值i所需的最少硬币数量
+     * $dp[i] = min(dp[i - ci]) + 1;
      * @param Integer[] $coins
      * @param Integer $amount
      * @return Integer
