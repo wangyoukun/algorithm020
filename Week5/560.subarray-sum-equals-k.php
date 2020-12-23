@@ -75,6 +75,45 @@ class Solution
         print_r($hash);
         return $count;
     }
+
+    function test($nums, $k)
+    {
+        $res = [];
+        $this->dfs($nums, $k, 0, [], $res);
+        return $res;
+    }
+
+    function dfs($nums, $k, $level, $list, &$res)
+    {
+        if ($k == 0) {
+            $res[] = $list;
+        }
+        for ($i = $level; $i < count($nums); $i++) {
+            array_push($list, $nums[$i]);
+            $this->dfs($nums, $k - $nums[$i], $i + 1, $list, $res);
+            array_pop($list);
+        }
+    }
+
+    function test2($nums, $k)
+    {
+        $res = [];
+        $this->dfs2($nums, $k, 0, [], $res);
+        return $res;
+    }
+
+    function dfs2($nums, $k, $level, $list, &$res)
+    {
+        if ($level == count($nums)) return;
+        if ($k == 0) {
+            $res[] = $list;
+            return;
+        }
+        $this->dfs($nums, $k, $level + 1, $list, $res);
+        array_push($list, $nums[$level]);
+        $this->dfs($nums, $k - $nums[$level], $level + 1, $list, $res);
+        array_pop($list);
+    }
 }
 
 /**
@@ -88,6 +127,9 @@ $nums = [1, 1, 1];
 $k = 2;
 $nums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 $k = 0;
+$nums = [1, 2, 3, 3];
+$k = 6;
 $s = new Solution();
-$ret = $s->subarraySum3($nums, $k);
+//$ret = $s->subarraySum3($nums, $k);
+$ret = $s->test2($nums, $k);
 print_r($ret);
