@@ -9,7 +9,8 @@ class BinaryTree
 
     public function __construct($arrTree)
     {
-        $root = $this->createTree($arrTree, 0);
+        //$root = $this->createTree($arrTree, 0);
+        $root = $this->createTree3($arrTree);
         $this->val = $root->val;
         $this->left = $root->left;
         $this->right = $root->right;
@@ -21,6 +22,7 @@ class BinaryTree
         $root = new TreeNode($arrTree[$i]);
         $left = 2 * $i + 1;
         $right = 2 * $i + 2;
+        //print_r('i:' . $i . '->' . ($arrTree[$i] ?? 'null') . '|L:' . $left . '->' . ($arrTree[$left] ?? 'null') . '|R:' . $right . '->' . ($arrTree[$right] ?? 'null') . PHP_EOL);
         $rootLeft = $this->createTree($arrTree, $left);
         if ($rootLeft && !is_null($rootLeft->val)) {
             $root->left = $rootLeft;
@@ -28,6 +30,77 @@ class BinaryTree
         $rootRight = $this->createTree($arrTree, $right);
         if ($rootRight && !is_null($rootRight->val)) {
             $root->right = $rootRight;
+        }
+        return $root;
+    }
+
+    function createTree2($arrTree)
+    {
+        $queue = new SplQueue();
+        $root = new TreeNode($arrTree[0]);
+        $queue->enqueue($root);
+        $levelNodeNum = 2; //注意不一定是2的幂,是上一行非空节点的数量乘2
+        $startIndex = 1;
+        $restNodeNum = count($arrTree) - 1;
+        while ($restNodeNum > 0) {
+            for ($i = $startIndex; $i < $startIndex + $levelNodeNum; $i = $i + 2) {
+                if ($i == count($arrTree)) {
+//                    echo '1';
+//                    print_r($root);
+                    return $root;
+                }
+                $node = $queue->dequeue();
+                if (!is_null($arrTree[$i])) {
+                    $node->left = new TreeNode($arrTree[$i]);
+                    $queue->enqueue($node->left);
+                }
+                if ($i + 1 == count($arrTree)) {
+//                    echo '2';
+//                    print_r($root);
+                    return $root;
+                }
+                if (!is_null($arrTree[$i + 1])) {
+                    $node->right = new TreeNode($arrTree[$i + 1]);
+                    $queue->enqueue($node->right);
+                }
+            }
+            $startIndex += $levelNodeNum;
+            $restNodeNum -= $levelNodeNum;
+            $levelNodeNum = 2 * $queue->count();
+        }
+//        echo '3';
+//        print_r($root);
+        return $root;
+    }
+
+    function createTree3($arrTree)
+    {
+        $queue = new SplQueue();
+        $root = new TreeNode($arrTree[0]);
+        $queue->enqueue($root);
+        $levelNodeNum = 2; //注意不一定是2的幂,是上一行非空节点的数量乘2
+        $startIndex = 1;
+        while (!$queue->isEmpty()) {
+            for ($i = $startIndex; $i < $startIndex + $levelNodeNum; $i = $i + 2) {
+                if ($i == count($arrTree)) {
+                    print_r($root);
+                    return $root;
+                }
+                $node = $queue->dequeue();
+                if (!is_null($arrTree[$i])) {
+                    $node->left = new TreeNode($arrTree[$i]);
+                    $queue->enqueue($node->left);
+                }
+                if ($i + 1 == count($arrTree)) {
+                    return $root;
+                }
+                if (!is_null($arrTree[$i + 1])) {
+                    $node->right = new TreeNode($arrTree[$i + 1]);
+                    $queue->enqueue($node->right);
+                }
+            }
+            $startIndex += $levelNodeNum;
+            $levelNodeNum = 2 * $queue->count();
         }
         return $root;
     }
@@ -65,7 +138,7 @@ class BinaryTree
                     //print_r('i:' . $i . '|j:' . $j . '|v:' . 2 ** $i . PHP_EOL);
                     $dp[$i][$j] = [$i, 2 * $j];
                 } else {
-                    $dp[$i][$j] = [$i, ($dp[$i + 1][2 * $j][1] + $dp[$i + 1][2 * $j + 1][1]) / 2];
+                    $dp[$i][$j] = [$i, ($dp[$i + 1][2 * $j][1] + $dp[$i + 1][2 * $j + 1][1]) / 2]; //仅适用于完全二叉树
                 }
             }
         }
