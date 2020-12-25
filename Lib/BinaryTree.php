@@ -60,8 +60,9 @@ class BinaryTree
         //计算新坐标
         $dp = [];
         for ($i = $treeHeight - 1; $i >= 0; $i--) {
-            for ($j = 0; $j < count($arrTree[$i]); $j++) {
+            for ($j = 0; $j < 2 ** $i; $j++) {
                 if ($i == count($arrTree) - 1) {
+                    //print_r('i:' . $i . '|j:' . $j . '|v:' . 2 ** $i . PHP_EOL);
                     $dp[$i][$j] = [$i, 2 * $j];
                 } else {
                     $dp[$i][$j] = [$i, ($dp[$i + 1][2 * $j][1] + $dp[$i + 1][2 * $j + 1][1]) / 2];
