@@ -36,6 +36,7 @@ class BinaryTree
     {
         //计算树高
         $treeHeight = $this->treeHeight($root);
+        //print_r('树高:' . $treeHeight . PHP_EOL);
 
         //层序遍历计算原坐标
         $queue = new SplQueue();
