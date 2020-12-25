@@ -83,7 +83,6 @@ class BinaryTree
         while (!$queue->isEmpty()) {
             for ($i = $startIndex; $i < $startIndex + $levelNodeNum; $i = $i + 2) {
                 if ($i == count($arrTree)) {
-                    print_r($root);
                     return $root;
                 }
                 $node = $queue->dequeue();
@@ -105,6 +104,10 @@ class BinaryTree
         return $root;
     }
 
+    /**
+     * 不带树枝打印 非完全二叉树 行不通
+     * @param $root
+     */
     function printTree($root)
     {
         //计算树高
@@ -172,6 +175,83 @@ class BinaryTree
         }
     }
 
+    /**
+     * 带树枝打印
+     * https://cloud.tencent.com/developer/ask/60848
+     * @param $root
+     */
+    function showTree($root)
+    {
+        $treeHeight = $this->treeHeight($root);
+        $this->printNodeInternal([$root], 1, $treeHeight);
+    }
+
+    function printNodeInternal($nodes, $level, $maxLevel)
+    {
+        if (empty($nodes) || $this->isAllElementNull($nodes)) return;
+        $floor = $maxLevel - $level;
+        $endLine = 2 ** max($floor - 1, 0);
+        $firstSpaces = 2 ** $floor - 1;
+        $betweenSpaces = 2 ** ($floor + 1) - 1;
+        $this->printWhiteSpaces($firstSpaces);
+        $newNodes = [];
+        foreach ($nodes as $node) {
+            if ($node) {
+                echo $node->val;
+                $newNodes[] = $node->left;
+                $newNodes[] = $node->right;
+            } else {
+                $newNodes[] = null;
+                $newNodes[] = null;
+                echo ' ';
+            }
+            $this->printWhiteSpaces($betweenSpaces);
+        }
+        echo PHP_EOL;
+        for ($i = 1; $i <= $endLine; $i++) {
+            for ($j = 0; $j < count($nodes); $j++) {
+                $this->printWhiteSpaces($firstSpaces - $i);
+                if (!$nodes[$j]) {
+                    $this->printWhiteSpaces($endLine + $endLine + $i + 1);
+                    continue;
+                }
+
+                if ($nodes[$j]->left) {
+                    echo '/';
+                } else {
+                    $this->printWhiteSpaces(1);
+                }
+
+                $this->printWhiteSpaces($i + $i - 1);
+
+                if ($nodes[$j]->right) {
+                    echo '\\';
+                } else {
+                    $this->printWhiteSpaces(1);
+                }
+                $this->printWhiteSpaces($endLine + $endLine - $i);
+            }
+            echo PHP_EOL;
+        }
+        $this->printNodeInternal($newNodes, $level + 1, $maxLevel);
+    }
+
+    function printWhiteSpaces($count)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            echo ' ';
+        }
+    }
+
+    function isAllElementNull($list)
+    {
+        foreach ($list as $obj) {
+            if ($obj) return false;
+        }
+        return true;
+    }
+
+
     function treeHeight($root)
     {
         if (!$root) return 0;
@@ -214,6 +294,8 @@ class BinaryTree
 //$arrTree = [1, 2, 3, 4, 5, null, 7];
 //$arrTree = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4];
 //$arrTree = range(1, 63, 1);
+//$arrTree = [1, 2, 3, 4, null, null, 7, 8, 9, null, 15];
 //$a = new BinaryTree($arrTree);
 ////print_r($a->treeHeight($a) . '|');
 //$a->printTree($a);
+//$a->showTree($a);
