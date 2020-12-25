@@ -197,7 +197,8 @@ class BinaryTree
         $newNodes = [];
         foreach ($nodes as $node) {
             if ($node) {
-                echo $node->val;
+                $this->displayColorText($node->val);
+                //echo $node->val;
                 $newNodes[] = $node->left;
                 $newNodes[] = $node->right;
             } else {
@@ -251,6 +252,10 @@ class BinaryTree
         return true;
     }
 
+    function displayColorText($txt)
+    {
+        echo "\e[34m" . $txt . "\e[0m";
+    }
 
     function treeHeight($root)
     {
