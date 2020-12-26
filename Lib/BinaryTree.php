@@ -6,6 +6,7 @@ class BinaryTree
     public $val = null;
     public $left = null;
     public $right = null;
+    public $maxWidth = 1;
 
     public function __construct($arrTree)
     {
@@ -204,7 +205,7 @@ class BinaryTree
             } else {
                 $newNodes[] = null;
                 $newNodes[] = null;
-                echo ' ';
+                $this->echoWidthTxt(' ');
             }
             $this->printWhiteSpaces($betweenSpaces);
         }
@@ -218,7 +219,7 @@ class BinaryTree
                 }
 
                 if ($nodes[$j]->left) {
-                    echo '/';
+                    $this->echoWidthTxt('/');
                 } else {
                     $this->printWhiteSpaces(1);
                 }
@@ -226,7 +227,7 @@ class BinaryTree
                 $this->printWhiteSpaces($i + $i - 1);
 
                 if ($nodes[$j]->right) {
-                    echo '\\';
+                    $this->echoWidthTxt('\\');
                 } else {
                     $this->printWhiteSpaces(1);
                 }
@@ -240,7 +241,7 @@ class BinaryTree
     function printWhiteSpaces($count)
     {
         for ($i = 0; $i < $count; $i++) {
-            echo ' ';
+            $this->echoWidthTxt(' ');
         }
     }
 
@@ -252,14 +253,27 @@ class BinaryTree
         return true;
     }
 
+    function echoWidthTxt($txt, $width = 1, $echo = 1)
+    {
+        $width = $this->maxWidth;
+        $txt = sprintf("%' " . $width . "s", $txt);
+        if ($echo) {
+            echo $txt;
+        } else {
+            return $txt;
+        }
+    }
+
     function displayColorText($txt)
     {
+        $txt = $this->echoWidthTxt($txt, $this->maxWidth, 0);
         echo "\e[34m" . $txt . "\e[0m";
     }
 
     function treeHeight($root)
     {
         if (!$root) return 0;
+        $this->maxWidth = max($this->maxWidth, strlen($root->val));
         return max($this->treeHeight($root->left), $this->treeHeight($root->right)) + 1;
     }
 
