@@ -4,6 +4,7 @@ class Solution
 {
 
     /**
+     * O(MN3^L) O(MN) M,N为网格长宽 L为字符串长度
      * @param String[][] $board
      * @param String $word
      * @return Boolean
