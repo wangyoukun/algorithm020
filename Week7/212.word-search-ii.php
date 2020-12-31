@@ -5,6 +5,7 @@ class Solution
 {
 
     /**
+     * O(MN * 4 * 3^(L-1)) O(N)
      * @param String[][] $board
      * @param String[] $words
      * @return String[]
