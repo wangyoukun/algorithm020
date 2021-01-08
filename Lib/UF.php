@@ -39,6 +39,11 @@ class UF
         $this->count--;
     }
 
+    function isConnected($p, $q)
+    {
+        return $this->find($p) == $this->find($q);
+    }
+
     function count()
     {
         return $this->count;
