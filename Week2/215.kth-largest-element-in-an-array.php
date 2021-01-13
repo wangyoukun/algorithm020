@@ -14,7 +14,7 @@ class Solution
     {
         $heapSize = $count = count($nums);
         $this->buildHeap($nums, $heapSize);
-        for ($i = $count - 1; $i > $count - $k; $i--) {
+        for ($i = $count - 1; $i > $count - $k; $i--) { //计算数组最后一个元素下标
             $this->swap($nums, $i, 0);
             $heapSize--;
             $this->maxHeapify($nums, 0, $heapSize);
@@ -46,6 +46,7 @@ class Solution
         if ($r < $heapSize && $arr[$r] > $arr[$max]) {
             $max = $r;
         }
+        //max 代表最大值的下标,有3个位置,自己当前位置，自己的左孩子,自己的右孩子
         if ($i != $max) {
             $this->swap($arr, $i, $max);
             $this->maxHeapify($arr, $max, $heapSize);
